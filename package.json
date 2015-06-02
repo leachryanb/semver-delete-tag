@@ -1,5 +1,5 @@
 {
-  "name": "tag-delete",
+  "name": "semver-tag-delete",
   "version": "1.0.0",
   "description": "Delete a range of tags",
   "preferGlobal": true,
