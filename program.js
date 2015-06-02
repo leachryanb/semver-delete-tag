@@ -38,11 +38,20 @@ var exec = require('child_process').exec,
 		if (tag) {
 			if (pattern && semver.satisfies(tag[1], pattern) && tagsToDelete.indexOf(tag[1]) === -1) {
 				tagsToDelete.push(tag[1]);
-			} else if (tagsToIgnore.indexOf(tag[1]) === -1){
+			} else if (tagsToIgnore.indexOf(tag[1]) === -1) {
 				tagsToIgnore.push(tag[1]);
 			}
 		}
 	},
+
+	tag_sorter = function(a, b) {
+		if (semver.lt(a, b)) {
+			return -1;
+		} else if (semver.gt(a, b)) {
+			return 1;
+		}
+		return 0;
+	};
 
 	cb_delete = function(err, answer1) {
 		if (answer1.okay === 'yes') {
@@ -83,10 +92,10 @@ exec(commands.list, function(err, stdout, stderr) {
 
 	if (tagsToDelete.length) {
 		console.log('Matching pattern:', pattern);
-		console.log(tagsToDelete.join(', '));
+		console.log(tagsToDelete.sort(tag_sorter).join('\n'));
 		prompt.get([prompts.confirm], cb_delete);
 	} else {
-		console.log(tagsToIgnore.join(', '));
+		console.log(tagsToIgnore.sort(tag_sorter).join('\n'));
 		console.log('No matches. Listing all the tags.'.blue);
 	}
 
