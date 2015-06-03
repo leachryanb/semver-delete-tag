@@ -33,7 +33,7 @@ var exec = require('child_process').exec,
 		}
 	},
 
-	tag_iterator = function(tag) {
+	tagIterator = function(tag) {
 		tag = tag.match(versionRegExp);
 		if (tag) {
 			if (pattern && semver.satisfies(tag[1], pattern) && tagsToDelete.indexOf(tag[1]) === -1) {
@@ -44,7 +44,7 @@ var exec = require('child_process').exec,
 		}
 	},
 
-	tag_sorter = function(a, b) {
+	tagSorter = function(a, b) {
 		if (semver.lt(a, b)) {
 			return -1;
 		} else if (semver.gt(a, b)) {
@@ -73,8 +73,8 @@ var exec = require('child_process').exec,
 	},
 
 	cb_locals = function(err, stdout, stderr) {
-		if (err || stderr) {
-			console.error('failed to delete locals', err, stderr);
+		if (err) {
+			console.error('failed to delete locals', err);
 		}
 	},
 
@@ -88,14 +88,14 @@ prompt.start();
 
 exec(commands.list, function(err, stdout, stderr) {
 
-	stdout.split(/\n/).forEach(tag_iterator);
+	stdout.split(/\n/).forEach(tagIterator);
 
 	if (tagsToDelete.length) {
 		console.log('Matching pattern:', pattern);
-		console.log(tagsToDelete.sort(tag_sorter).join('\n'));
+		console.log(tagsToDelete.sort(tagSorter).join('\n'));
 		prompt.get([prompts.confirm], cb_delete);
 	} else {
-		console.log(tagsToIgnore.sort(tag_sorter).join('\n'));
+		console.log(tagsToIgnore.sort(tagSorter).join('\n'));
 		console.log('No matches. Listing all the tags.'.blue);
 	}
 
