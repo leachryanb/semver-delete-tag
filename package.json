@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "Delete a range of tags",
   "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "http://as-gitmaster.epnet.com:7990/rd/semver-delete-tag.git"
+  },
+  "publishConfig": {
+    "registry": "http://artifactory.epnet.com:8081/artifactory/api/npm/eae-npm-release",
+    "tag": "develop"
+  },
   "bin": {
     "semver-tag-delete": "program.js"
   },
